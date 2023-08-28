@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado usuarios</title>
+</head>
+<body>
+  <app-navbar-log-admin></app-navbar-log-admin>
+    <section id="Admin_usuarios">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-8 heading">
+					<h1>Listado de usuarios</h1>
+					<p class="sub-doub">En este espacio tiene completo acceso a la lista de usuarios registrados en el sistema</p>
+          <p class="sub">Puede actualizar información si así lo requiere...</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="cont-r">
+          <table id="lista_asistencia">
+            <thead>
+              <tr>
+                <th class="col">Identificación</th>
+                <th class="col">Tipo de usuario</th>
+                <th class="col">P.nombre</th>
+                <th class="col">P.apellido</th>
+                <th class="col">S.apellido</th>
+                <th class="col asist_correo">Correo</th>
+                <th class="col">Antecedentes #1</th>
+                <th class="col">Antecedentes #2</th>
+                <th class="col">Estado del usuario</th>
+                <th class="col asist_acciones">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let usuario of usuarios | async">
+                <td class="tds">{{ usuario.id_user }}</td>
+                <td class="tds">{{ usuario.tipo_user }}</td>
+                <td class="tds">{{ usuario.nom1_user }}</td>
+                <td class="tds">{{ usuario.ape1_user }}</td>
+                <td class="tds">{{ usuario.ape2_user }}</td>
+                <td class="tds">{{ usuario.correo_sena_user }}</td>
+                <td class="tds">{{ usuario.fk_anteced_salud_sel }}</td>
+                <td class="tds">{{ usuario.anteced_salud_inp }}</td>
+                <td class="tds">{{ usuario.estado_user }}</td>
+                <td class="tds"><a [routerLink]="['/admin/usuarios/edicion/', usuario.id_user]"><button type='button' class='btn btn-update'>Editar</button></a></td>
+                <!-- <fieldset class="form-group col-sm-1">
+                  <a style="font-size: 13px;" class="btn btn-info" [routerLink]="['/usuarios/editar/', usuario.id_user]">Editar</a>
+                </fieldset> -->
+                
+                <!-- <td class="col-sm-1">
+                  <fieldset class="form-group col-sm-1">
+                    <a style="font-size: 13px;" class="btn btn-danger" (click)="borrarUsuario(usuario.id_user)">Borrar</a>
+                  </fieldset>
+                </td> -->
+              </tr>
+
+             
+                      <!-- <td class='tds'>$iid_user</td>
+                      <td class='tds'>$ttipo_user</td>
+                      <td class='tds'>$nnom1_user</td>
+                      <td class='tds'>$aape1_user</td>
+                      <td class='tds'>$aape2_user</td>
+                      <td class='tds'>$ccorreo_sena_user</td>
+                      <td class='tds'>$aanteced_salud_sel</td>
+                      <td class='tds'>$anteced_salud_inp</td>
+                      <td class='tds'>$eestado_user</td>
+                      <td class='tds'><a href='../controller/c_user_pre_edit.php?id=$iid_user'><button type='button' class='btn btn-update'>Editar</button></a></td>
+                      
+              </tr> -->
+            </tbody>
+          </table>
+				</div>
+			</div>
+		</div>
+	</section>
+  <app-footer></app-footer>
+</body>
+</html>
+
+
+<!-- <body style="font-size: 13px;">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <form class="form-inline">
+        <fieldset class="form-group col-sm-11"></fieldset>
+        <fieldset class="form-group col-sm-1">
+          <a class="btn btn-primary" [routerLink]="['/usuarios/agregar']">Agregar</a>
+        </fieldset>
+      </form>
+      <br>
+      <table class="table table-striped">
+        <thead>
+          <tr class="row">
+            <th class="col-sm-1"> Identificación </th>
+            <th class="col-sm-1"> Tipo de usuario </th>
+            <th class="col-sm-1"> P.nombre </th>
+            <th class="col-sm-1"> P.apellido </th>
+            <th class="col-sm-1"> S.apellido </th>
+            <th class="col-sm-2"> Correo </th>
+            <th class="col-sm-1"> Antecedentes #1 </th>
+            <th class="col-sm-1"> Antecedentes #2 </th>
+            <th class="col-sm-1"> Estado del usuario </th>
+            <th class="col-sm-1"> Acciones </th>
+            <th class="col-sm-1"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuarios | async" class="row">
+            <td class="col-sm-1"><i>{{ usuario.id_user }}</i></td>
+            <td class="col-sm-1"><i>{{ usuario.tipo_user }}</i></td>
+            <td class="col-sm-1"><i>{{ usuario.nom1_user }}</i></td>
+            <td class="col-sm-1"><i>{{ usuario.ape1_user }}</i></td>
+            <td class="col-sm-1"><i>{{ usuario.ape2_user }}</i></td>
+            <td class="col-sm-2"><i>{{ usuario.correo_sena_user }}</i></td>
+            <td class="col-sm-1"><i>{{ usuario.fk_anteced_salud_sel }}</i></td>
+            <td class="col-sm-1"><i>{{ usuario.anteced_salud_inp }}</i></td>
+            <td class="col-sm-1"><i>{{ usuario.estado_user }}</i></td>
+            <td class="col-sm-1">
+              <fieldset class="form-group col-sm-1">
+                <a style="font-size: 13px;" class="btn btn-info" [routerLink]="['/usuarios/editar/', usuario.id_user]">Editar</a>
+              </fieldset>
+            </td>
+            <td class="col-sm-1">
+              <fieldset class="form-group col-sm-1">
+                <a style="font-size: 13px;" class="btn btn-danger" (click)="borrarUsuario(usuario.id_user)">Borrar</a>
+              </fieldset>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body> -->
