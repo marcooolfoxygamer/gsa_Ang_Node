@@ -40,7 +40,7 @@ export class EdicionComponent implements OnInit {
 
     this.usuarioService.actualizarUsuario(this.usuario).subscribe(data => {
       alert(data)
-      this.router.navigate(['/admin/usuarios/listado'])
+      this.router.navigate(['../usuarios_listado'])
     })
   }
 }

@@ -7,7 +7,16 @@
     <title>Edición usuarios</title>
 </head>
 <body>
-    <app-navbar-log-admin></app-navbar-log-admin>
+    <div class="navbar">
+      <img src="../../../../assets/images/Logo_GsA-removebg-preview.png" class="logo">
+      <ul>
+          <li><a routerLink="../../home">Inicio</a></li>
+          <li><a href="Anuncios.php">Anuncios</a></li>
+          <li><a href="Recomendaciones.html">Recomendaciones</a></li>
+          <li><a routerLink="../../admin">Mis actividades</a></li>
+          <li id="liFinLinea"><a href="../model/salir.php">Cerrar Sesion</a></li>
+      </ul>
+    </div>
     <section id="Admin_usuarios_edit">
 		<div class="container">
 			<div class="row row-pb-md">
@@ -70,7 +79,7 @@
 						<div class="form-group" style="margin-top: 3%;">
 							<!-- <input type="submit" value="Actualizar información" class="Subm" id="submit-ed"> -->
                             <!-- <button type="submit" class="Subm" id="submit-ed" [disabled]="!usuarioForm.form.valid">Actualizar información</button> -->
-                            <input type="submit" value="Actualizar información" class="Subm" id="submit-ed" [disabled]="!usuarioForm.form.valid">
+                <input type="submit" value="Actualizar información" class="Subm" id="submit-ed" [disabled]="!usuarioForm.form.valid">
 						</div>
 					</form>
 				</div>

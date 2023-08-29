@@ -1,1 +1,46 @@
-<p>iniciar-sesion works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio Sesión</title>
+</head>
+<body>
+    <app-navbar-general></app-navbar-general>
+    <section id="IniciarSesion">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-8 heading">
+					<h1>Iniciar sesión</h1>
+					<p class="sub">Inicie sesión en su cuenta dentro del sistema.</p>
+					<p class="subtle-text">Iniciar sesión</p>
+				</div>
+			</div>
+			<div>
+				<div>
+					<form (ngSubmit)="onSubmit()" #usuarioForm="ngForm">
+						<div class="form-group">
+							<label for="correo_sena_iniciosesion" class="sr-only">Correo electrónico brindado por el sena</label>
+							<input type="email" class="form-control ini" placeholder="Correo electrónico (brindado por el sena)" id="correo_sena_iniciosesion" name="correo" [(ngModel)]="usuario.correo_sena_user" required>
+						</div>
+						<div class="form-group">
+							<label for="password_iniciosesion" class="sr-only">Contraseña</label>
+							<input type="password" class="form-control ini" placeholder="Contraseña" id="password_iniciosesion" name="pass" maxlength="15" [(ngModel)]="usuario.contrasena" required>
+						</div>
+						<div class="form-group-ini" style="margin-top: 3%;">
+							<input type="submit" value="Iniciar sesión" class="Subm inises" id="submit-ini1" name="loggear" [disabled]="!usuarioForm.form.valid">
+							<button value="Recuperar_contraseña" class="Subm inises ini2" id="submit-ini2" onclick="window.location.href='Recuperacion_Contrasena.html'">Olvidó su contraseña?</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- <div style="text-align: center;">
+		<a href="Aprendiz.html" style="margin-right: 15px; color: #6ab31d;">Redireccionamiento inicio sesión aprendiz</a>
+		<a href="Instructor.html" style="color: #6ab31d;">Redireccionamiento inicio sesión instructor</a>
+	</div> -->
+	<app-footer></app-footer>
+</body>
+</html>

@@ -20,7 +20,7 @@ const PUERTO = 9300
 const conexion = mysql.createConnection(
     {
         host:'localhost',
-        database:'bd_gymsenapp_users',
+        database:'bd_gymsenapp',
         user:'root',
         password:''
     }
@@ -35,9 +35,44 @@ conexion.connect(error => {
     console.log('Conexión exitosa a la base de datos');
 })
 
+
 app.get('/', (req, res) => {
     res.send('API')
 })
+
+
+// tipos de usuarios
+
+app.get('/tipos_usuarios', (req, res) => {
+    const query = `SELECT * FROM tipos_usuarios`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
+// antecedentes
+
+app.get('/antecedentes', (req, res) => {
+    const query = `SELECT * FROM anteced_salud`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
+
+// Administrador
 
 app.get('/admin/usuarios/listado', (req, res) => {
     const query = `SELECT id_user, tipo_user, nom1_user, ape1_user, ape2_user, correo_sena_user, fk_anteced_salud_sel, anteced_salud_inp, estado_user
@@ -74,6 +109,23 @@ app.get('/admin/usuarios/listado/:id_user', (req, res) => {
     })
 })
 
+app.put('/admin/usuarios/edicion/:id_user', (req, res) => {
+    const { id_user } = req.params
+    let {
+        fk_tipo_user,nom1_user,nom2_user,ape1_user,ape2_user,correo_sena_user,fk_anteced_salud_sel,anteced_salud_inp,estado_user
+    } = req.body
+
+    const query = `UPDATE usuarios SET fk_tipo_user=${fk_tipo_user}, nom1_user='${nom1_user}', nom2_user='${nom2_user}', ape1_user='${ape1_user}', ape2_user='${ape2_user}', correo_sena_user='${correo_sena_user}', fk_anteced_salud_sel='${fk_anteced_salud_sel}', anteced_salud_inp='${anteced_salud_inp}', estado_user=${estado_user} WHERE id_user=${id_user}`
+    conexion.query(query, (error) => {
+        if(error) return console.error(error.message)
+
+        res.json(`Se actualizó correctamente el usuario`)
+    })
+})
+
+
+// Registro
+
 app.post('/home/regisrarse', (req, res) => {
     let {
         id_user,nom1_user,nom2_user,ape1_user,ape2_user,correo_sena_user,contrasena,fk_anteced_salud_sel,anteced_salud_inp
@@ -94,11 +146,11 @@ app.post('/home/regisrarse', (req, res) => {
     const query = `INSERT INTO usuarios values(${id_user},2,'${nom1_user}','${nom2_user}','${ape1_user}','${ape2_user}','${correo_sena_user}','${contrasena}','${fk_anteced_salud_sel}','${anteced_salud_inp}',1)`
         conexion.query(query, (error) => {
             if(error) {
-                val = `http://localhost:9300/usuarios/${id_user}`
-                if (JSON.stringify(val)!=`No hay registros`){
-                    return res.json('No se pudo agregar el registro')
+                // val = `http://localhost:9300/admin/usuarios/listado/${id_user}`
+                // if (JSON.stringify(val)!=`No hay registros`){
+                res.json('El número de documento ingresado ya se encuentra registrado en nuestro sistema. Por favor, inténtelo nuevamentente')
+                    //return res.json('No se pudo agregar el registro')
                     //return console.error(error.message)
-                }
             }
             else {
                 res.json(`Se agregó correctamente el usuario`)
@@ -107,59 +159,71 @@ app.post('/home/regisrarse', (req, res) => {
     
 })
 
-app.put('/admin/usuarios/edicion/:id_user', (req, res) => {
-    const { id_user } = req.params
+
+// Login
+
+app.post('/login', (req, res) => {
     let {
-        fk_tipo_user,nom1_user,nom2_user,ape1_user,ape2_user,correo_sena_user,fk_anteced_salud_sel,anteced_salud_inp,estado_user
+        correo_sena_user,contrasena
     } = req.body
 
-    const query = `UPDATE usuarios SET fk_tipo_user=${fk_tipo_user}, nom1_user='${nom1_user}', nom2_user='${nom2_user}', ape1_user='${ape1_user}', ape2_user='${ape2_user}', correo_sena_user='${correo_sena_user}', fk_anteced_salud_sel='${fk_anteced_salud_sel}', anteced_salud_inp='${anteced_salud_inp}', estado_user=${estado_user} WHERE id_user=${id_user}`
-    conexion.query(query, (error) => {
-        if(error) return console.error(error.message)
+    contrasena = md5(contrasena)
 
-        res.json(`Se actualizó correctamente el usuario`)
-    })
+    const query = `SELECT * FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND contrasena='${contrasena}' AND estado_user=1`
+        conexion.query(query, (error, resultado) => {
+            if(error) {
+                res.json('Error')
+                // val = `http://localhost:9300/admin/usuarios/listado/${id_user}`
+                // if (JSON.stringify(val)!=`No hay registros`){
+                    //return res.json('No se pudo agregar el registro')
+                    //return console.error(error.message)
+                // }
+            }
+            else {
+                if (resultado.length == 1) {
+                    return res.json('Se encontró')
+                }
+                else {
+                    return res.json('Correo o contraseña incorrecta')
+                }
+            }
+        })
 })
 
-// app.delete('/usuarios/borrar/:id_user', (req, res) => {
-//     const { id_user } = req.params
+app.post('/get_rol', (req, res) => {
+    let {
+        correo_sena_user,contrasena
+    } = req.body
 
-//     const query = `UPDATE usuarios SET estado_user=0 WHERE id_user=${id_user}`
-//     conexion.query(query, (error) => {
-//         if(error) console.error(error.message)
+    contrasena = md5(contrasena)
 
-//         res.json(`Se eliminó correctamente el usuario`)
-//     })
-// })
-
-// tipos de usuarios
-
-app.get('/tipos_usuarios', (req, res) => {
-    const query = `SELECT * FROM tipos_usuarios`
-    conexion.query(query, (error, resultado) => {
-        if(error) return console.error(error.message)
-
-        if(resultado.length > 0) {
-            res.json(resultado)
-        } else {
-            res.json(`No hay registros`)
-        }
-    })
+    const query = `SELECT fk_tipo_user FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND contrasena='${contrasena}' AND estado_user=1`
+        conexion.query(query, (error, resultado) => {
+            if(error) {
+                return res.json('Error')
+                // val = `http://localhost:9300/admin/usuarios/listado/${id_user}`
+                // if (JSON.stringify(val)!=`No hay registros`){
+                    //return res.json('No se pudo agregar el registro')
+                    //return console.error(error.message)
+                // }
+            }
+            else {
+                if (resultado.length == 1) {
+                    return res.json(resultado[0]['fk_tipo_user'])
+                }
+                else {
+                    return res.json('No se encontró el rol del usuario')
+                }
+            }
+        })
 })
 
-// antecedentes
 
-app.get('/antecedentes', (req, res) => {
-    const query = `SELECT * FROM anteced_salud`
-    conexion.query(query, (error, resultado) => {
-        if(error) return console.error(error.message)
 
-        if(resultado.length > 0) {
-            res.json(resultado)
-        } else {
-            res.json(`No hay registros`)
-        }
-    })
-})
+
+
+
+
+
 
 

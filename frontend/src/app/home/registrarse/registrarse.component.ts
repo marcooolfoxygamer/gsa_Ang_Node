@@ -29,7 +29,7 @@ export class RegistrarseComponent implements OnInit {
 
     this.usuarioService.agregarUsuario(this.usuario).subscribe(data => {
       alert(data)
-      this.router.navigate(['/home'])
+      this.router.navigate(['../iniciar_sesion'])
     })
     
   }
