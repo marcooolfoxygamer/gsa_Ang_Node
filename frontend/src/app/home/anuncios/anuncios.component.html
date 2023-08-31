@@ -1,1 +1,38 @@
-<p>anuncios works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anuncios</title>
+</head>
+<body>
+    <app-navbar-general></app-navbar-general>
+    <section id="Anuncios">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-8 heading">
+					<h1>Anuncios</h1>
+					<p class="sub">En la parte inferior encontrará anuncios importantes que el gimnasio tiene para usted.</p>
+					<p class="subtle-text">Anuncios</p>
+				</div>
+			</div>
+			<div class="row team-item gtco-team" *ngFor="let anunc of anuncios | async">
+				<div class="col-md-6">
+					<div class="cont_img_anunc">
+						<div class="img-shadow_anunc">
+							<img src='../../../assets/images/anuncios/{{anunc.img_anunc}}' class='img-responsive_anunc'>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<h2 class='heading-colored rowText rowTextH2'>{{anunc.titulo_anunc}}</h2>
+        			<p class='rowText'>{{anunc.desc_anunc}}</p>
+				</div>
+			</div>
+			<p style="margin-bottom: 100px;"></p>
+		</div>
+	</section>
+    <app-footer></app-footer>
+</body>
+</html>

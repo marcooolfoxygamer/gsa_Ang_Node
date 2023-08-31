@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule, routes } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UsuarioService } from './shared/usuario.service';
+import { UsuarioService } from './shared/service-usuario/usuario.service';
 import { FooterComponent } from './shared/footer/footer.component';
 import { InicioComponent } from './home/inicio/inicio.component';
 import { AnunciosComponent } from './home/anuncios/anuncios.component';
@@ -17,6 +17,8 @@ import { BienvenidaAdminComponent } from './admin/bienvenida-admin/bienvenida-ad
 import { ListadoComponent } from './admin/usuarios/listado/listado.component';
 import { EdicionComponent } from './admin/usuarios/edicion/edicion.component';
 import { NavbarGeneralComponent } from './shared/navbar-general/navbar-general.component';
+import { BienvenidaAprendizComponent } from './aprendiz/bienvenida-aprendiz/bienvenida-aprendiz.component';
+import { PlanificadorComponent } from './aprendiz/planificador/planificador.component';
 
 
 
@@ -32,7 +34,9 @@ import { NavbarGeneralComponent } from './shared/navbar-general/navbar-general.c
     BienvenidaAdminComponent,
     ListadoComponent,
     EdicionComponent,
-    NavbarGeneralComponent
+    NavbarGeneralComponent,
+    BienvenidaAprendizComponent,
+    PlanificadorComponent
   ],
   imports: [
     BrowserModule,

@@ -41,6 +41,8 @@ app.get('/', (req, res) => {
 })
 
 
+
+
 // tipos de usuarios
 
 app.get('/tipos_usuarios', (req, res) => {
@@ -56,6 +58,8 @@ app.get('/tipos_usuarios', (req, res) => {
     })
 })
 
+
+
 // antecedentes
 
 app.get('/antecedentes', (req, res) => {
@@ -70,6 +74,23 @@ app.get('/antecedentes', (req, res) => {
         }
     })
 })
+
+
+// anuncios
+
+app.get('/anuncios', (req,res) => {
+    const query = `SELECT * FROM anuncios WHERE estado_anunc=1`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
 
 
 // Administrador
@@ -219,10 +240,50 @@ app.post('/get_rol', (req, res) => {
 })
 
 
+app.get('/musculos', (req, res) => {
+    const query = `SELECT * FROM musculos`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
 
 
+app.post('/planificador', (req,res) => {
+    let {
+        id_aprend,musculo
+    } = req.body
 
+    const query = `INSERT INTO planificador VALUES (NULL,1,'${musculo}')`
+        conexion.query(query, (error) => {
+            if(error) {
+                res.json('Un error ocurrió. Por favor, inténtelo nuevamentente')
+            }
+            else {
+                res.json(`Se agregó correctamente`)
+            }
+        })
+})
 
+app.get('/ejercicios_musculo/:musculo', (req, res) => {
+    const { musculo } = req.params
+
+    const query = `SELECT pkfk_musculo, pkfk_ejercicio, imagen_ejerc FROM musculos_ejercicios INNER JOIN ejercicios ON pkfk_ejercicio=ejercicio WHERE pkfk_musculo='${musculo}'`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
 
 
 

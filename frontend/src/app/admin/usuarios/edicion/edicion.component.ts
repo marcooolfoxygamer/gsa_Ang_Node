@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UsuarioService } from 'src/app/shared/usuario.service';
+import { UsuarioService } from 'src/app/shared/service-usuario/usuario.service';
 import { Route, Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
-import { UsuarioModel, TiposUsuarios, Antecedentes } from 'src/app/shared/usuario.model';
+import { UsuarioModel, TiposUsuarios, Antecedentes } from 'src/app/shared/service-usuario/usuario.model';
 
 @Component({
   selector: 'app-edicion',
@@ -30,7 +30,7 @@ export class EdicionComponent implements OnInit {
     }, error => {
       console.log(error);
     })
-    
+
     this.tiposusuarios = this.usuarioService.obtenerTiposUsuarios();
     this.antecedentes = this.usuarioService.obtenerAntecedentes();
   }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UsuarioService } from 'src/app/shared/usuario.service';
+import { UsuarioService } from 'src/app/shared/service-usuario/usuario.service';
 import { Route, Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
-import { UsuarioModel } from 'src/app/shared/usuario.model';
+import { UsuarioModel } from 'src/app/shared/service-usuario/usuario.model';
 
 @Component({
   selector: 'app-iniciar-sesion',
@@ -41,9 +41,9 @@ export class IniciarSesionComponent implements OnInit {
           // }
         })
       }
-      
+
     })
-    
+
   }
 
 }
