@@ -27,9 +27,15 @@ export class RegistrarseComponent implements OnInit {
   onSubmit() {
     console.log('onSubmit');
 
-    this.usuarioService.agregarUsuario(this.usuario).subscribe(data => {
-      alert(data)
-      this.router.navigate(['../iniciar_sesion'])
+    this.usuarioService.validarCorreo(this.usuario).subscribe(data => {
+      if (data == 'Disponible') {
+        this.usuarioService.agregarUsuario(this.usuario).subscribe(data => {
+          alert(data)
+          this.router.navigate(['../iniciar_sesion'])
+        })
+      } else {
+        alert(data)
+      }
     })
   }
 }

@@ -18,7 +18,8 @@
     display: flex;
     margin: 40px auto 0 auto;
     z-index: 6;
-    width: 350px;
+    /* width: 350px; */
+    width: calc(30% - 100px);
 }
 
 /* Barra de Navegación */
@@ -620,17 +621,20 @@ input[type=number]::-webkit-outer-spin-button {
 .items_asist{
     margin: 10px;
     text-align: center;
-    width: 280px;
+    width: calc(30% - 10px);
+    /* width: 280px; */
 }
 /* Estilo aplicado al título o nombre que le permite al instructor comprender en cada campo qué se debe colocar para llenar correctamente la asistencia */
 .titulo-asist{
     background: #777777c3;
     color: rgb(255, 243, 226);
+    margin: 0 auto;
+    width: calc(100% - 22px);
 }
 /* Estilo aplicado a las cajas que contienen los input */
 .caja_input{
-    margin: 0px auto;
-    width:100%;
+    margin: 0 auto;
+    width: 100%;
 }
 /* Estilo aplicado a cada input de la asistencia */
 .formul_sesinic{
@@ -713,7 +717,7 @@ input[type=number]::-webkit-outer-spin-button {
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.456);
     z-index: 20;
 }
 .confirm-box {
@@ -726,14 +730,15 @@ input[type=number]::-webkit-outer-spin-button {
     background: white;
 }
 .confirm-box h2{
-    margin: 30px 0;
+    margin: 50px 0;
     font-size: 32px;
 }
 .confirm-box p{
     font-size: 18px;
+    margin-bottom: 10px;
 }
 .confirm-box button{
-    width: 50px;
+    width: 60px;
     font-size: 15px;
     padding: 6px;
     border: 0;
@@ -742,12 +747,14 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .confirm-box #confirma{
     background-color: #89a968;
+    margin-right: 5px;
 }
 .confirm-box #confirma:hover{
     background-color: #65a124;
 }
 .confirm-box #denega{
     background-color: rgb(195, 122, 122);
+    margin-left: 5px;
 }
 .confirm-box #denega:hover{
     background-color: rgb(238, 70, 70);

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edición usuarios</title>
+</head>
+<body>
+    <div class="navbar">
+        <img src="../../../../assets/images/Logo_GsA-removebg-preview.png" class="logo">
+        <ul>
+            <li><a routerLink="../../home">Inicio</a></li>
+            <li><a routerLink="../../anuncios">Anuncios</a></li>
+            <li><a routerLink="../../recomendaciones">Recomendaciones</a></li>
+            <li><a routerLink="../../instructor">Mis actividades</a></li>
+            <li id="liFinLinea"><a href="../model/salir.php">Cerrar Sesion</a></li>
+        </ul>
+    </div>
+    
+    <section id="Registrarse">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-8 heading">
+					<h1>Edición</h1>
+					<p class="sub">Edite los datos del registro de asistencia con un par de teclas y clicks</p>
+					<p class="subtle-text">Editar</p>
+				</div>
+			</div>
+			<div class="row">
+				<div>
+					<form (ngSubmit)="onSubmit()" #asistenciaForm="ngForm">
+						<div class="form-group">
+							<label for="num_identificacion" class="sr-only">Identificación del Instructor</label>
+    						<input type='number' class='form-control' placeholder='Identificación del Instructor' id='num_identificacion' name='id_Instructor' [(ngModel)]="asistencia.id_instruc_asis" required>
+						</div>
+						<div class="form-group">
+							<label for="num_identificacion" class="sr-only">Identificación del Aprendiz</label>
+    						<input type='number' class='form-control' placeholder='Identificación del Aprendiz' id='num_identificacion' name='id_Aprendiz' [(ngModel)]="asistencia.fk_id_aprend_asis" required>
+						</div>
+						<div class="form-group">
+							<label for="num_identificacion" class="sr-only">Fecha</label>
+    						<input type='date' class='form-control' placeholder='Fecha' id='num_identificacion' name='fecha' [(ngModel)]="asistencia.fecha_asis" required>
+						</div>
+						<div class="form-group" style="margin-top: 3%;">
+							<input type="submit" value="Actualizar registro" class="Subm" id="submit-ed" [disabled]="!asistenciaForm.form.valid">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<app-footer></app-footer>
+</body>
+</html>

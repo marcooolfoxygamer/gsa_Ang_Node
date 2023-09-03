@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenid@ Administrador</title>
+    <title>Bienvenid@ Instructor(a)</title>
 </head>
 <body>
     <div class="navbar">
@@ -13,35 +13,35 @@
             <li><a routerLink="../home">Inicio</a></li>
             <li><a routerLink="../anuncios">Anuncios</a></li>
             <li><a routerLink="../recomendaciones">Recomendaciones</a></li>
-            <li><a routerLink="../admin">Mis actividades</a></li>
+            <li><a routerLink="../instructor">Mis actividades</a></li>
             <li id="liFinLinea"><a href="../model/salir.php">Cerrar Sesion</a></li>
         </ul>
     </div>
-
+    
     <section id="Apre_Inst_Admin">
 		<div class="container">
 			<div class="row row-pb-md">
 				<div class="col-md-8 heading">
-					<h1>Bienvenid@ a su cuenta administrador</h1>
+					<h1>Bienvenid@ a su cuenta instructor</h1>
 					<p class="subtle-text">Bienvenid@</p>
 				</div>
 			</div>
 			<div class="row team-item gtco-team">
 				<div class="col-md-6 col-md-push-7">
 					<div class="img-shadow">
-						<img src="../../../assets/images/Aprendiz.jpg" class="img-responsive" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
+						<img src="../../../assets/images/Instructor.jpg" class="img-responsive" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
 					</div>
 				</div>
 				<div class="col-md-6 col-md-pull-6">
 					<h2 class="heading-colored rowText rowTextH2">Mis actividades</h2>
         			<p class="rowText">Aquí puede acceder a sus actividades dentro del sistema, seleccione lo que desea hacer:</p>
-					<a [routerLink]="['../anuncios_listado']" class="rowText link-ini-ses">Editar anuncios</a>
-					<a [routerLink]="['../usuarios_listado']" class="rowText link-ini-ses">Editar usuarios</a>
+					<a [routerLink]="['../asistencia_agregar']" class="rowText link-ini-ses">Acceder al registro de asistencia</a>
+					<a [routerLink]="['../asistencia_listado']" class="rowText link-ini-ses">Acceder al listado de asistencia</a>
 				</div>
 			</div>
 			<p style="margin-bottom: 100px;"></p>
 		</div>
 	</section>
-    <app-footer></app-footer>
+	<app-footer></app-footer>
 </body>
 </html>

@@ -11,20 +11,32 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) { }
 
+  obtenerTiposUsuarios() {
+    return this.http.get<TiposUsuarios[]>(this.BASE_URL+'/tipos_usuarios');
+  }
+
+  obtenerAntecedentes() {
+    return this.http.get<Antecedentes[]>(this.BASE_URL+'/antecedentes');
+  }
+
+  validarCorreo(usuario: UsuarioModel) {
+    return this.http.post<string>(`${this.BASE_URL}/validar_correo`, usuario)
+  }
+
   obtenerUsuarios() {
-    return this.http.get<UsuarioModel[]>(this.BASE_URL+'/admin/usuarios/listado');
+    return this.http.get<UsuarioModel[]>(this.BASE_URL+'/usuarios_listado');
   }
 
   obtenerUsuario(id_user: string) {
-    return this.http.get<UsuarioModel[]>(`${this.BASE_URL}/admin/usuarios/listado/${id_user}`)
+    return this.http.get<UsuarioModel[]>(`${this.BASE_URL}/usuarios_listado/${id_user}`)
   }
 
   agregarUsuario(usuario: UsuarioModel) {
-    return this.http.post<string>(`${this.BASE_URL}/home/regisrarse`, usuario);
+    return this.http.post<string>(`${this.BASE_URL}/registrarse`, usuario);
   }
 
   iniciarSesion(usuario: UsuarioModel) {
-    return this.http.post<string>(`${this.BASE_URL}/login`, usuario)
+    return this.http.post<string>(`${this.BASE_URL}/iniciar_sesion`, usuario)
   }
 
   obtenerRol(usuario: UsuarioModel) {
@@ -32,14 +44,6 @@ export class UsuarioService {
   }
 
   actualizarUsuario(usuario: UsuarioModel) {
-    return this.http.put<string>(`${this.BASE_URL}/admin/usuarios/edicion/${usuario.id_user}`, usuario)
-  }
-
-  obtenerTiposUsuarios() {
-    return this.http.get<TiposUsuarios[]>(this.BASE_URL+'/tipos_usuarios');
-  }
-
-  obtenerAntecedentes() {
-    return this.http.get<Antecedentes[]>(this.BASE_URL+'/antecedentes');
+    return this.http.put<string>(`${this.BASE_URL}/usuarios_edicion/${usuario.id_user}`, usuario)
   }
 }

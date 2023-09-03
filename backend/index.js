@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 
 
 
-// tipos de usuarios
+// Tipos de usuarios
 
 app.get('/tipos_usuarios', (req, res) => {
     const query = `SELECT * FROM tipos_usuarios`
@@ -60,7 +60,7 @@ app.get('/tipos_usuarios', (req, res) => {
 
 
 
-// antecedentes
+// Antecedentes
 
 app.get('/antecedentes', (req, res) => {
     const query = `SELECT * FROM anteced_salud`
@@ -76,7 +76,7 @@ app.get('/antecedentes', (req, res) => {
 })
 
 
-// anuncios
+// Anuncios
 
 app.get('/anuncios', (req,res) => {
     const query = `SELECT * FROM anuncios WHERE estado_anunc=1`
@@ -92,62 +92,46 @@ app.get('/anuncios', (req,res) => {
 })
 
 
+// Validación existencia correo registro
 
-// Administrador
+app.post('/validar_correo', (req, res) => {
+    let { id_user, correo_sena_user } = req.body
 
-app.get('/admin/usuarios/listado', (req, res) => {
-    const query = `SELECT id_user, tipo_user, nom1_user, ape1_user, ape2_user, correo_sena_user, fk_anteced_salud_sel, anteced_salud_inp, estado_user
-    FROM usuarios
-    INNER JOIN tipos_usuarios
-    ON fk_tipo_user=cod_tipo_user`
-    conexion.query(query, (error, resultado) => {
-        if(error) return console.error(error.message)
-
-        if(resultado.length > 0) {
-            res.json(resultado)
-        } else {
-            res.json(`No hay registros`)
-        }
-    })
+    const query = `SELECT * FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND estado_user=1`
+        conexion.query(query, (error, resultado) => {
+            if(error) {
+                return res.json('Error')
+            }
+            else {
+                if (resultado.length == 0) {
+                    
+                    const query_id = `SELECT * FROM usuarios WHERE id_user=${id_user} AND estado_user=1`
+                    conexion.query(query_id, (error, resultado_id) => {
+                        if(error){
+                            return res.json('Error')
+                        }
+                        else{
+                            if (resultado_id.length == 0) {
+                                return res.json('Disponible')
+                            }
+                            else {
+                                return res.json('El número de identificación digitado ya existe en nuestro sistema')
+                            }
+                        }
+                    })
+                }
+                else {
+                    return res.json('El correo electrónico ya existe en nuestro sistema. Por favor, inténtelo con otro')
+                }
+            }
+        })
 })
 
-app.get('/admin/usuarios/listado/:id_user', (req, res) => {
-    const { id_user } = req.params
-
-    const query = `SELECT id_user, fk_tipo_user, tipo_user, nom1_user, nom2_user, ape1_user, ape2_user, correo_sena_user, fk_anteced_salud_sel, anteced_salud_inp, estado_user
-    FROM usuarios
-    INNER JOIN tipos_usuarios
-    ON fk_tipo_user = cod_tipo_user
-    WHERE id_user=${id_user}`
-    conexion.query(query, (error, resultado) => {
-        if(error) return console.error(error.message)
-
-        if(resultado.length > 0) {
-            res.json(resultado)
-        } else {
-            res.json(`No hay registros`)
-        }
-    })
-})
-
-app.put('/admin/usuarios/edicion/:id_user', (req, res) => {
-    const { id_user } = req.params
-    let {
-        fk_tipo_user,nom1_user,nom2_user,ape1_user,ape2_user,correo_sena_user,fk_anteced_salud_sel,anteced_salud_inp,estado_user
-    } = req.body
-
-    const query = `UPDATE usuarios SET fk_tipo_user=${fk_tipo_user}, nom1_user='${nom1_user}', nom2_user='${nom2_user}', ape1_user='${ape1_user}', ape2_user='${ape2_user}', correo_sena_user='${correo_sena_user}', fk_anteced_salud_sel='${fk_anteced_salud_sel}', anteced_salud_inp='${anteced_salud_inp}', estado_user=${estado_user} WHERE id_user=${id_user}`
-    conexion.query(query, (error) => {
-        if(error) return console.error(error.message)
-
-        res.json(`Se actualizó correctamente el usuario`)
-    })
-})
 
 
 // Registro
 
-app.post('/home/regisrarse', (req, res) => {
+app.post('/registrarse', (req, res) => {
     let {
         id_user,nom1_user,nom2_user,ape1_user,ape2_user,correo_sena_user,contrasena,fk_anteced_salud_sel,anteced_salud_inp
     } = req.body
@@ -167,11 +151,8 @@ app.post('/home/regisrarse', (req, res) => {
     const query = `INSERT INTO usuarios values(${id_user},2,'${nom1_user}','${nom2_user}','${ape1_user}','${ape2_user}','${correo_sena_user}','${contrasena}','${fk_anteced_salud_sel}','${anteced_salud_inp}',1)`
         conexion.query(query, (error) => {
             if(error) {
-                // val = `http://localhost:9300/admin/usuarios/listado/${id_user}`
-                // if (JSON.stringify(val)!=`No hay registros`){
-                res.json('El número de documento ingresado ya se encuentra registrado en nuestro sistema. Por favor, inténtelo nuevamentente')
-                    //return res.json('No se pudo agregar el registro')
-                    //return console.error(error.message)
+                res.json('Ha ocurrido un error. Por favor, inténtelo nuevamente')
+                // res.json('El número de documento ingresado ya se encuentra registrado en nuestro sistema. Por favor, inténtelo nuevamentente')
             }
             else {
                 res.json(`Se agregó correctamente el usuario`)
@@ -181,9 +162,9 @@ app.post('/home/regisrarse', (req, res) => {
 })
 
 
-// Login
+// Inicio de sesion
 
-app.post('/login', (req, res) => {
+app.post('/iniciar_sesion', (req, res) => {
     let {
         correo_sena_user,contrasena
     } = req.body
@@ -193,23 +174,20 @@ app.post('/login', (req, res) => {
     const query = `SELECT * FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND contrasena='${contrasena}' AND estado_user=1`
         conexion.query(query, (error, resultado) => {
             if(error) {
-                res.json('Error')
-                // val = `http://localhost:9300/admin/usuarios/listado/${id_user}`
-                // if (JSON.stringify(val)!=`No hay registros`){
-                    //return res.json('No se pudo agregar el registro')
-                    //return console.error(error.message)
-                // }
+                res.json('Ha ocurrido un error. Por favor, inténtelo nuevamente')
             }
             else {
                 if (resultado.length == 1) {
                     return res.json('Se encontró')
                 }
                 else {
-                    return res.json('Correo o contraseña incorrecta')
+                    return res.json('El correo o la contraseña es incorrecta. Por favor, inténtelo de nuevo')
                 }
             }
         })
 })
+
+// Obtener rol del usuario que inició sesión
 
 app.post('/get_rol', (req, res) => {
     let {
@@ -222,11 +200,6 @@ app.post('/get_rol', (req, res) => {
         conexion.query(query, (error, resultado) => {
             if(error) {
                 return res.json('Error')
-                // val = `http://localhost:9300/admin/usuarios/listado/${id_user}`
-                // if (JSON.stringify(val)!=`No hay registros`){
-                    //return res.json('No se pudo agregar el registro')
-                    //return console.error(error.message)
-                // }
             }
             else {
                 if (resultado.length == 1) {
@@ -239,6 +212,62 @@ app.post('/get_rol', (req, res) => {
         })
 })
 
+
+// Administrador
+
+app.get('/usuarios_listado', (req, res) => {
+    const query = `SELECT id_user, tipo_user, nom1_user, ape1_user, ape2_user, correo_sena_user, fk_anteced_salud_sel, anteced_salud_inp, estado_user
+    FROM usuarios
+    INNER JOIN tipos_usuarios
+    ON fk_tipo_user=cod_tipo_user`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
+
+app.get('/usuarios_listado/:id_user', (req, res) => {
+    const { id_user } = req.params
+
+    const query = `SELECT id_user, fk_tipo_user, tipo_user, nom1_user, nom2_user, ape1_user, ape2_user, correo_sena_user, fk_anteced_salud_sel, anteced_salud_inp, estado_user
+    FROM usuarios
+    INNER JOIN tipos_usuarios
+    ON fk_tipo_user = cod_tipo_user
+    WHERE id_user=${id_user}`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
+
+app.put('/usuarios_edicion/:id_user', (req, res) => {
+    const { id_user } = req.params
+    let {
+        fk_tipo_user,nom1_user,nom2_user,ape1_user,ape2_user,correo_sena_user,fk_anteced_salud_sel,anteced_salud_inp,estado_user
+    } = req.body
+
+    const query = `UPDATE usuarios SET fk_tipo_user=${fk_tipo_user}, nom1_user='${nom1_user}', nom2_user='${nom2_user}', ape1_user='${ape1_user}', ape2_user='${ape2_user}', correo_sena_user='${correo_sena_user}', fk_anteced_salud_sel='${fk_anteced_salud_sel}', anteced_salud_inp='${anteced_salud_inp}', estado_user=${estado_user} WHERE id_user=${id_user}`
+    conexion.query(query, (error) => {
+        if(error) return console.error(error.message)
+
+        res.json(`Se actualizó correctamente el usuario`)
+    })
+})
+
+
+// Aprendiz
 
 app.get('/musculos', (req, res) => {
     const query = `SELECT * FROM musculos`
@@ -270,6 +299,7 @@ app.post('/planificador', (req,res) => {
         })
 })
 
+
 app.get('/ejercicios_musculo/:musculo', (req, res) => {
     const { musculo } = req.params
 
@@ -286,5 +316,83 @@ app.get('/ejercicios_musculo/:musculo', (req, res) => {
 })
 
 
+// Instructor
 
+app.get('/asistencia_listado', (req, res) => {
+    const query = `SELECT id_registro_asis, id_instruc_asis, fk_id_aprend_asis, nom1_user, ape1_user, ape2_user, correo_sena_user, fk_anteced_salud_sel, anteced_salud_inp, fecha_asis 
+    FROM asistencia
+    INNER JOIN usuarios
+    ON fk_id_aprend_asis=id_user
+    WHERE estado_asis = 1
+    ORDER BY fecha_asis DESC`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
+
+app.get('/asistencia_listado/:id_registro_asis', (req, res) => {
+    const { id_registro_asis } = req.params
+
+    const query = `SELECT * FROM asistencia WHERE id_registro_asis=${id_registro_asis}`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
+
+app.post('/asistencia_agregar', (req,res) => {
+    let {
+        id_instruc_asis,fk_id_aprend_asis,fecha_asis
+    } = req.body
+
+    const query = `INSERT INTO asistencia VALUES (NULL,${id_instruc_asis},${fk_id_aprend_asis},'${fecha_asis}',1)`
+        conexion.query(query, (error) => {
+            if(error) {
+                res.json('Un error ocurrió. Por favor, inténtelo nuevamentente')
+            }
+            else {
+                res.json(`Se agregó correctamente el registro`)
+            }
+        })
+})
+
+
+app.put('/asistencia_edicion/:id_registro_asis', (req, res) => {
+    const { id_registro_asis } = req.params
+    let {
+        id_instruc_asis,fk_id_aprend_asis,fecha_asis,estado_asis
+    } = req.body
+
+    const query = `UPDATE asistencia SET id_instruc_asis=${id_instruc_asis}, fk_id_aprend_asis=${fk_id_aprend_asis}, fecha_asis='${fecha_asis}', estado_asis=${estado_asis} WHERE id_registro_asis=${id_registro_asis}`
+    conexion.query(query, (error) => {
+        if(error) return console.error(error.message)
+
+        res.json(`Se actualizó correctamente el registro de asistencia`)
+    })
+})
+
+
+app.delete('/asistencia_eliminacion/:id_registro_asis', (req, res) => {
+    const { id_registro_asis } = req.params
+
+    const query = `UPDATE asistencia SET estado_asis=0 WHERE id_registro_asis=${id_registro_asis}`
+    conexion.query(query, (error) => {
+        if(error) return console.error(error.message)
+
+        res.json(`Se eliminó correctamente el registro de asistencia`)
+    })
+})
 

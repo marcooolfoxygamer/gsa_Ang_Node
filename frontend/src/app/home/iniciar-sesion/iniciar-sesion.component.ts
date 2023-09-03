@@ -26,19 +26,22 @@ export class IniciarSesionComponent implements OnInit {
     console.log('onSubmit');
 
     this.usuarioService.iniciarSesion(this.usuario).subscribe(data => {
-      if (data == 'Correo o contraseña incorrecta') {
+      if (data == 'El correo o la contraseña es incorrecta. Por favor, inténtelo de nuevo') {
         alert(data)
-        this.router.navigate(['../iniciar_sesion'])
+        // this.router.navigate(['../iniciar_sesion'])
         // this.router.navigate(['../inicio'])
       }
       else {
         this.usuarioService.obtenerRol(this.usuario).subscribe(data => {
-          // if (data == '1') {
+          if (data == '1') {
             this.router.navigate(['../admin'])
-          // }
-          // if (data == '2') {
-            // this.router.navigate(['../bienvenida/admin'])
-          // }
+          }
+          if (data == '2') {
+            this.router.navigate(['../aprendiz'])
+          }
+          if (data == '3') {
+            this.router.navigate(['../instructor'])
+          }
         })
       }
 
