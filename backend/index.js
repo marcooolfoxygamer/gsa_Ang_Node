@@ -122,6 +122,45 @@ app.post('/validar_correo', (req, res) => {
         })
 })
 
+// Validacion para recuperar la constraseña
+
+app.post('/validar_rec_contrasena', (req, res) => {
+    let {
+        id_user,correo_sena_user
+    } = req.body
+
+    const query = `SELECT * FROM usuarios WHERE id_user='${id_user}' AND correo_sena_user='${correo_sena_user}' AND estado_user=1`
+        conexion.query(query, (error, resultado) => {
+            if(error) {
+                res.json('Ha ocurrido un error. Por favor, inténtelo nuevamente')
+            }
+            else {
+                if (resultado.length == 1) {
+                    return res.json('Se encontró')
+                }
+                else {
+                    return res.json('Alguno de los datos ingresados no coincide con los datos existentes en el sistema. Por favor, inténtelo de nuevo')
+                }
+            }
+        })
+})
+
+app.put('/validar_rec_contrasena/:id_user', (req, res) => {
+    const { id_user } = req.params
+    let {
+        contrasena
+    } = req.body
+
+    contrasena = md5(contrasena)
+
+    const query = `UPDATE usuarios SET contrasena='${contrasena}' WHERE id_user=${id_user}`
+    conexion.query(query, (error) => {
+        if(error) return console.error(error.message)
+
+        res.json(`Se actualizó correctamente la contraseña`)
+    })
+})
+
 
 
 // Registro
@@ -230,12 +269,12 @@ const upload = multer({storage});
 app.get('/anuncios_imagenes/:img_anunc', (req, res) => {
     const { img_anunc } = req.params
 
-    const query = `SELECT * FROM anuncios WHERE img_anunc='${img_anunc}'`
+    const query = `SELECT img_anunc FROM anuncios WHERE img_anunc='${img_anunc}'`
     conexion.query(query, (error, resultado) => {
         if(error) return console.error(error.message)
 
         if(resultado.length > 0) {
-            res.json('Ya tenemos una imagen registrada con el mismo nombre. Por favor, cambie el nombre del archivo')
+            res.json(resultado)
         } else {
             res.json(`No hay registros`)
         }
@@ -246,9 +285,10 @@ app.post('/anuncios_subir_img', upload.single('file'),(req,res,next)=> {
     const file = req.file;
 
     if (!file) {
-        const error = new Error('No hay archivos');
-        error.httpStatusCode = 400;
-        return next(error);
+        res.json('No hay archivos');
+        // const error = new Error('No hay archivos');
+        // error.httpStatusCode = 400;
+        // return next(error);
     }
     res.json(file.filename);
 });
@@ -314,7 +354,7 @@ app.put('/anuncios_edicion/:id_anunc', (req, res) => {
     conexion.query(query, (error) => {
         if(error) return console.error(error.message)
 
-        res.json(`Se actualizó correctamente el registro de asistencia`)
+        res.json(`Se actualizó correctamente el anuncio`)
     })
 })
 

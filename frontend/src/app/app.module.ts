@@ -15,6 +15,7 @@ import { AnunciosComponent } from './home/anuncios/anuncios.component';
 import { RecomendacionesComponent } from './home/recomendaciones/recomendaciones.component';
 import { RegistrarseComponent } from './home/registrarse/registrarse.component';
 import { IniciarSesionComponent } from './home/iniciar-sesion/iniciar-sesion.component';
+import { RecuperacionContrasenaComponent } from './recuperacion-contrasena/recuperacion-contrasena.component';
 import { BienvenidaAdminComponent } from './admin/bienvenida-admin/bienvenida-admin.component';
 import { AgregarAnuncioComponent } from './admin/anuncios/agregar-anuncio/agregar-anuncio.component';
 import { ListarAnuncioComponent } from './admin/anuncios/listar-anuncio/listar-anuncio.component';
@@ -41,6 +42,7 @@ import { EditarAsistenciaComponent } from './instructor/asistencia/editar-asiste
     RecomendacionesComponent,
     RegistrarseComponent,
     IniciarSesionComponent,
+    RecuperacionContrasenaComponent,
     BienvenidaAdminComponent,
     AgregarAnuncioComponent,
     ListarAnuncioComponent,

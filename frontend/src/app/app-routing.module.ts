@@ -5,6 +5,7 @@ import { AnunciosComponent } from './home/anuncios/anuncios.component';
 import { RecomendacionesComponent } from './home/recomendaciones/recomendaciones.component';
 import { RegistrarseComponent } from './home/registrarse/registrarse.component';
 import { IniciarSesionComponent } from './home/iniciar-sesion/iniciar-sesion.component';
+import { RecuperacionContrasenaComponent } from './recuperacion-contrasena/recuperacion-contrasena.component';
 import { BienvenidaAdminComponent } from './admin/bienvenida-admin/bienvenida-admin.component';
 import { AgregarAnuncioComponent } from './admin/anuncios/agregar-anuncio/agregar-anuncio.component';
 import { ListarAnuncioComponent } from './admin/anuncios/listar-anuncio/listar-anuncio.component';
@@ -24,6 +25,7 @@ export const routes: Routes = [
   { path: 'recomendaciones', component: RecomendacionesComponent },
   { path: 'registrarse', component: RegistrarseComponent },
   { path: 'iniciar_sesion', component: IniciarSesionComponent },
+  { path: 'recuperacion_contrasena', component: RecuperacionContrasenaComponent},
   { path: 'admin', component: BienvenidaAdminComponent },
   { path: 'anuncios_agregar', component: AgregarAnuncioComponent },
   { path: 'anuncios_listado', component: ListarAnuncioComponent },

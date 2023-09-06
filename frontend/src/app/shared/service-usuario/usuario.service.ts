@@ -23,6 +23,14 @@ export class UsuarioService {
     return this.http.post<string>(`${this.BASE_URL}/validar_correo`, usuario)
   }
 
+  validar_rec_contrasena(usuario: UsuarioModel) {
+    return this.http.post<string>(`${this.BASE_URL}/validar_rec_contrasena`, usuario)
+  }
+
+  actualizarContrasena(usuario: UsuarioModel) {
+    return this.http.put<string>(`${this.BASE_URL}/validar_rec_contrasena/${usuario.id_user}`, usuario)
+  }
+
   obtenerUsuarios() {
     return this.http.get<UsuarioModel[]>(this.BASE_URL+'/usuarios_listado');
   }

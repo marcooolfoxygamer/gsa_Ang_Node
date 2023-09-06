@@ -26,6 +26,7 @@ export class EditarAnuncioComponent implements OnInit {
 
     this.anuncioService.obtenerAnuncio(this.id_anunc).subscribe(data => {
       this.anuncio = data[0]
+      this.imagen = this.anuncio.img_anunc
     }, error => {
       console.log(error);
     })
@@ -35,28 +36,39 @@ export class EditarAnuncioComponent implements OnInit {
     const file = event.target.files[0];
 
     this.imagen = file;
-    // console.log(this.imagen)
   }
 
   onSubmit() {
     console.log('onSubmit');
 
-    // let formData = new FormData();
-    // formData.append('file',this.imagen);
+    if (typeof this.imagen === "string"){
+      this.anuncioService.actualizarAnuncio(this.anuncio).subscribe(data => {
+          alert(data)
+          this.router.navigate(['../anuncios_listado'])
+        })
+    }
+    else {
+      let formData = new FormData();
+      formData.append('file',this.imagen);
 
-    // this.anuncioService.agregarImagen(formData).subscribe(data => {
-    //   this.anuncio.img_anunc = data
-
-    //   this.anuncioService.buscarImagen(this.anuncio.img_anunc).subscribe(data2 => {
-    //     if (data2 == 'Ya tenemos una imagen registrada con el mismo nombre. Por favor, cambie el nombre del archivo') {
-    //       alert(data2)
-    //     } else {
-    //       this.anuncioService.agregarAnuncio(this.anuncio).subscribe(data3 => {
-    //         alert(data3)
-    //         this.router.navigate(['../anuncios_listado'])
-    //       })
-    //     }
-    //   })
-    // })
+      this.anuncioService.agregarImagen(formData).subscribe(data => {
+        if (data == 'No hay archivos'){
+          alert('Por favor, inserte un archivo para poner de imagen')
+        }
+        else {
+          this.anuncio.img_anunc = data
+          this.anuncioService.buscarImagen(this.anuncio.img_anunc).subscribe(data2 => {
+            if (data2 == `No hay registros`) {
+              this.anuncioService.actualizarAnuncio(this.anuncio).subscribe(data3 => {
+                alert(data3)
+                this.router.navigate(['../anuncios_listado'])
+              })
+            } else {
+              alert('Ya tenemos una imagen registrada con el mismo nombre. Por favor, cambie el nombre del archivo')
+            }
+          })
+        }
+      })
+    }
   }
 }
