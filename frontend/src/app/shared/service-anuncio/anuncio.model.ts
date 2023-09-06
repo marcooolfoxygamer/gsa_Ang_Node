@@ -5,5 +5,6 @@ export class AnuncioModel {
     public titulo_anunc: string,
     public desc_anunc: string,
     public img_anunc: string,
+    public estado_anunc: string,
   ) { }
 }

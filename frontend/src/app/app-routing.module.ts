@@ -27,7 +27,7 @@ export const routes: Routes = [
   { path: 'admin', component: BienvenidaAdminComponent },
   { path: 'anuncios_agregar', component: AgregarAnuncioComponent },
   { path: 'anuncios_listado', component: ListarAnuncioComponent },
-  { path: 'anuncios_edicion/id_anunc', component: EditarAnuncioComponent },
+  { path: 'anuncios_edicion/:id_anunc', component: EditarAnuncioComponent },
   { path: 'usuarios_listado', component: ListadoComponent },
   { path: 'usuarios_edicion/:id_user', component: EdicionComponent },
   { path: 'aprendiz', component: BienvenidaAprendizComponent },

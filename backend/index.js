@@ -1,8 +1,15 @@
-const express = require('express')
-const mysql = require('mysql')
-const bodyParser = require('body-parser')
+const express = require('express');
+const mysql = require('mysql');
+const bodyParser = require('body-parser');
+// npm install cors
+const cors = require('cors');
+// npm install multer
+const multer = require('multer');
+// npm install morgan
+const morgan = require('morgan')
+const path = require('path')
 // npm install md5
-const md5 = require('md5')
+const md5 = require('md5');
 
 const app = express()
 
@@ -13,7 +20,11 @@ app.use(function(req, res, next) {
     next()
 })
 
-app.use(bodyParser.json())
+// Middlewares
+app.use(cors({origin:"*"}));
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+
 
 const PUERTO = 9300
 
@@ -64,22 +75,6 @@ app.get('/tipos_usuarios', (req, res) => {
 
 app.get('/antecedentes', (req, res) => {
     const query = `SELECT * FROM anteced_salud`
-    conexion.query(query, (error, resultado) => {
-        if(error) return console.error(error.message)
-
-        if(resultado.length > 0) {
-            res.json(resultado)
-        } else {
-            res.json(`No hay registros`)
-        }
-    })
-})
-
-
-// Anuncios
-
-app.get('/anuncios', (req,res) => {
-    const query = `SELECT * FROM anuncios WHERE estado_anunc=1`
     conexion.query(query, (error, resultado) => {
         if(error) return console.error(error.message)
 
@@ -214,6 +209,129 @@ app.post('/get_rol', (req, res) => {
 
 
 // Administrador
+
+    // Anuncios
+
+        // Ruta guardar y mostrar las imágenes
+
+app.use('/images', express.static(path.join(__dirname,'images')));
+
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, 'images')
+    },
+    filename: (req, file, callback) => {
+        callback(null, file.originalname);
+    }
+});
+
+const upload = multer({storage});
+
+app.get('/anuncios_imagenes/:img_anunc', (req, res) => {
+    const { img_anunc } = req.params
+
+    const query = `SELECT * FROM anuncios WHERE img_anunc='${img_anunc}'`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json('Ya tenemos una imagen registrada con el mismo nombre. Por favor, cambie el nombre del archivo')
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
+app.post('/anuncios_subir_img', upload.single('file'),(req,res,next)=> {
+    const file = req.file;
+
+    if (!file) {
+        const error = new Error('No hay archivos');
+        error.httpStatusCode = 400;
+        return next(error);
+    }
+    res.json(file.filename);
+});
+
+
+
+app.get('/anuncios_listado', (req, res) => {
+    const query = `SELECT * FROM anuncios WHERE estado_anunc=1 ORDER BY id_anunc DESC`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
+
+app.get('/anuncios_listado/:id_anunc', (req, res) => {
+    const { id_anunc } = req.params
+
+    const query = `SELECT * FROM anuncios WHERE id_anunc=${id_anunc}`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        console.log(resultado)
+
+        if(resultado.length > 0) {
+            res.json(resultado)
+        } else {
+            res.json(`No hay registros`)
+        }
+    })
+})
+
+
+app.post('/anuncios_agregar', (req,res) => {
+    let {
+        fk_id_admin_anunc,titulo_anunc,desc_anunc,img_anunc
+    } = req.body
+
+    const query = `INSERT INTO anuncios VALUES (NULL,1,'${titulo_anunc}','${desc_anunc}','${img_anunc}',1)`
+        conexion.query(query, (error) => {
+            if(error) {
+                res.json('Un error ocurrió. Por favor, inténtelo nuevamentente')
+            }
+            else {
+                res.json(`Se agregó correctamente el anuncio`)
+            }
+        })
+})
+
+
+app.put('/anuncios_edicion/:id_anunc', (req, res) => {
+    const { id_anunc } = req.params
+    let {
+        fk_id_admin_anunc,titulo_anunc,desc_anunc,img_anunc,estado_anunc
+    } = req.body
+
+    const query = `UPDATE anuncios SET fk_id_admin_anunc=${fk_id_admin_anunc}, titulo_anunc='${titulo_anunc}', desc_anunc='${desc_anunc}', img_anunc='${img_anunc}', estado_anunc=${estado_anunc} WHERE id_anunc=${id_anunc}`
+    conexion.query(query, (error) => {
+        if(error) return console.error(error.message)
+
+        res.json(`Se actualizó correctamente el registro de asistencia`)
+    })
+})
+
+
+app.delete('/anuncios_eliminacion/:id_anunc', (req, res) => {
+    const { id_anunc } = req.params
+
+    const query = `UPDATE anuncios SET estado_anunc=0 WHERE id_anunc=${id_anunc}`
+    conexion.query(query, (error) => {
+        if(error) return console.error(error.message)
+
+        res.json(`Se eliminó correctamente el anuncio`)
+    })
+})
+
+
+    // Usuarios
 
 app.get('/usuarios_listado', (req, res) => {
     const query = `SELECT id_user, tipo_user, nom1_user, ape1_user, ape2_user, correo_sena_user, fk_anteced_salud_sel, anteced_salud_inp, estado_user

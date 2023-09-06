@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule, routes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UsuarioService } from './shared/service-usuario/usuario.service';
+import { AnuncioService } from './shared/service-anuncio/anuncio.service';
 import { NavbarGeneralComponent } from './shared/navbar-general/navbar-general.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { InicioComponent } from './home/inicio/inicio.component';
@@ -61,7 +62,8 @@ import { EditarAsistenciaComponent } from './instructor/asistencia/editar-asiste
     FormsModule
   ],
   providers: [
-    UsuarioService
+    UsuarioService,
+    AnuncioService
   ],
   bootstrap: [AppComponent]
 })

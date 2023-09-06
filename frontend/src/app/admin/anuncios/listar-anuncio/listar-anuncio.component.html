@@ -1,1 +1,87 @@
-<p>listar-anuncio works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de anuncios del sistema</title>
+</head>
+<body>
+    <div class="navbar">
+        <img src="../../../../assets/images/Logo_GsA-removebg-preview.png" class="logo">
+        <ul>
+            <li><a routerLink="../home">Inicio</a></li>
+            <li><a routerLink="../anuncios">Anuncios</a></li>
+            <li><a routerLink="../recomendaciones">Recomendaciones</a></li>
+            <li><a routerLink="../admin">Mis actividades</a></li>
+            <li id="liFinLinea"><a href="../model/salir.php">Cerrar Sesion</a></li>
+        </ul>
+    </div>
+    
+    <section id="Admin_anuncios">
+		  <div class="container">
+		  	<div class="row row-pb-md">
+		  		<div class="col-md-8 heading">
+		  			<h1>Listado de anuncios del sistema</h1>
+		  			<p class="sub-doub">En este espacio tiene acceso a la lista de anuncios que se muestran en nuestro sistema</p>
+            <p class="sub">Puede agregar o actualizar anuncios si así lo requiere...</p>
+            <p class="sub-doub"><a [routerLink]="['../anuncios_agregar/']" class="link-db" id="a-volverAsist">Agregar un nuevo anuncio</a></p>
+		  		</div>
+		  	</div>
+		  	<div class="row">
+		  		<div class="cont-r">
+            <table id="lista" class="txt_anunc">
+              <thead>
+                <tr>
+                  <th class="col admin_anunc_imagenes">Imagen</th>
+                  <th class="col">Identificación administrador creador</th>
+                  <th class="col">Titulo anuncio</th>
+                  <th class="col">Descripción anuncio</th>
+                  <th class="col admin_anunc_acciones" colspan="2">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let anuncio of anuncios | async">
+                  <td class='tds'><img [src]="url+anuncio.img_anunc"  alt='' class='img_anunc_admin'></td>
+                  <td class='tds'>{{ anuncio.fk_id_admin_anunc }}</td>
+                  <td class='tds'>{{ anuncio.titulo_anunc }}</td>
+                  <td class='tds'>{{ anuncio.desc_anunc }}</td>
+                  <td class='tds'><a [routerLink]="['../anuncios_edicion/',anuncio.id_anunc]"><button type='button' class='btn btn-update'>Editar</button></a></td>
+                  <td class='tds'><button type='button' class='btn btn-delete' (click)='showConfirmBox(anuncio.id_anunc)'>Eliminar</button></td>
+
+                  <div class='overlay' id='overlay' [hidden]="oculto">
+                    <div class='confirm-box'>
+                      <br>
+                      <h2>Confirmación de decisión</h2>
+                      <p>Está segur@ de que quiere eliminar el anuncio?</p>
+                      <br>
+                      <button id='confirma' (click)="isConfirm(true)">Si</button>
+                      <button id='denega' (click)='isConfirm(false)'>No</button>
+                    </div>
+                  </div>
+
+                  <!-- <script>
+                    function showConfirmBox() {
+                      document.getElementById('overlay').hidden = false;
+                    }
+                    function closeConfirmBox() {
+                      document.getElementById('overlay').hidden = true;
+                    }
+                  
+                    function isConfirm(answer,id) {
+                      if (answer) {
+                        location.href ='../controller/c_anunc_delete.php?id='+id;
+                      }
+                      closeConfirmBox();
+                    }
+                  </script> -->
+                </tr>
+              </tbody>
+            </table>
+		  		</div>
+		  	</div>
+		  </div>
+	  </section>
+  <app-footer></app-footer>
+</body>
+</html>

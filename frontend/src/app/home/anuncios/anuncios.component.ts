@@ -19,6 +19,8 @@ export class AnunciosComponent implements OnInit {
     private router: Router
   ) { }
 
+  url = this.anuncioService.BASE_URL+'/images/'
+
   ngOnInit() {
       this.anuncios = this.anuncioService.obtenerAnuncios();
   }

@@ -1,1 +1,57 @@
-<p>editar-anuncio works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edición de anuncio</title>
+</head>
+<body>
+    <div class="navbar">
+      <img src="../../../../assets/images/Logo_GsA-removebg-preview.png" class="logo">
+      <ul>
+          <li><a routerLink="../../home">Inicio</a></li>
+          <li><a routerLink="../../anuncios">Anuncios</a></li>
+          <li><a routerLink="../../recomendaciones">Recomendaciones</a></li>
+          <li><a routerLink="../../admin">Mis actividades</a></li>
+          <li id="liFinLinea"><a href="../model/salir.php">Cerrar Sesion</a></li>
+      </ul>
+    </div>
+    <section id="Admin_anuncios_edit">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-8 heading">
+					<h1>Edición</h1>
+					<p class="sub">Edite los datos del anuncio con un par de teclas y clicks</p>
+					<p class="subtle-text">Editar</p>
+				</div>
+			</div>
+			<div class="row">
+				<div>
+					<form (ngSubmit)="onSubmit()" #anuncioForm="ngForm">
+						<div class="form-group">
+							<label for="img_anunc" class="sr-only">Imagen del anuncio</label>
+    						<input type='file' class='form-control' placeholder='Imagen del anuncio' id='img_anunc' name='img_anunc' accept="image/*" (change)="selectImage($event)">
+						</div>
+						<div class="form-group">
+							<label for="titulo_anunc" class="sr-only">Título del anuncio</label>
+    						<input type='text' class='form-control' placeholder='Título del anuncio' id='titulo_anunc' name='titulo_anunc' [(ngModel)]="anuncio.titulo_anunc" required>
+						</div>
+						<div class="form-group">
+							<label for="desc_anunc" class="sr-only">Descripción del anuncio</label>
+    						<textarea class='form-control' placeholder='Descripción del anuncio' id='desc_anunc' name='desc_anunc' [(ngModel)]="anuncio.desc_anunc"></textarea>
+						</div>
+    							<!-- <input type='hidden' name='id_anunc' value='$iid_anunc'>";
+								<input type='hidden' name='fk_id_admin_anunc' value='$ffk_id_admin_anunc'>";
+								<input type='hidden' name='iimg_anunc' value='$iimg_anunc'> -->
+						<div class="form-group" style="margin-top: 3%;">
+							<input type="submit" value="Actualizar registro" class="Subm" id="submit-ed" [disabled]="!anuncioForm.form.valid">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<app-footer></app-footer>
+</body>
+</html>
