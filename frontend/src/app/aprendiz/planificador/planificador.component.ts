@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { PlanificadorService } from 'src/app/shared/service-planificador/planificador.service';
 import { Route, Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { PlanificadorModel, MusculosModel, Ejercicios_MusculosModel } from 'src/app/shared/service-planificador/planificador.model';
+import { SessionStorageService } from 'src/app/shared/service-session_storage/session-storage.service';
 
 @Component({
   selector: 'app-planificador',
@@ -17,6 +18,7 @@ export class PlanificadorComponent implements OnInit {
 
   constructor(
     private planificadorService: PlanificadorService,
+    protected sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -24,11 +26,21 @@ export class PlanificadorComponent implements OnInit {
   subm:boolean = false
 
   ngOnInit() {
-      this.musculos = this.planificadorService.obtenerMusculos();
+    
+    let rol = this.sessionStorageService.get('rol')
+
+    if (rol != '2') {
+      this.sessionStorageService.clear()
+    }
+
+    this.musculos = this.planificadorService.obtenerMusculos();
   }
 
   onSubmit() {
     console.log('onSubmit');
+
+    let id_ap:any = this.sessionStorageService.get('id_user')
+    this.planificador.id_aprend = id_ap
 
     this.planificadorService.agregarPlanificador(this.planificador).subscribe(data => {
       if (data == 'Se agregó correctamente') {

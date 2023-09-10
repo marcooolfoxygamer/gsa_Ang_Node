@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Route, Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { AsistenciaListaModel } from 'src/app/shared/service-asistencia/asistencia.model';
 import { AsistenciaService } from 'src/app/shared/service-asistencia/asistencia.service';
+import { SessionStorageService } from 'src/app/shared/service-session_storage/session-storage.service';
 
 @Component({
   selector: 'app-listar-asistencia',
@@ -18,11 +19,18 @@ export class ListarAsistenciaComponent implements OnInit {
 
   constructor(
     private asistenciaService: AsistenciaService,
+    protected sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
+    let rol = this.sessionStorageService.get('rol')
+
+    if (rol != '3') {
+      this.sessionStorageService.clear()
+    }
+    
     this.asistencias = this.asistenciaService.obtenerAsistencias();
   }
 

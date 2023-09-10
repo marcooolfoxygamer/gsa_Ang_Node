@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Route, Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { AnuncioModel } from 'src/app/shared/service-anuncio/anuncio.model';
 import { AnuncioService } from 'src/app/shared/service-anuncio/anuncio.service';
+import { SessionStorageService } from 'src/app/shared/service-session_storage/session-storage.service';
 
 @Component({
   selector: 'app-listar-anuncio',
@@ -18,6 +19,7 @@ export class ListarAnuncioComponent implements OnInit {
 
   constructor(
     private anuncioService: AnuncioService,
+    protected sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -25,6 +27,11 @@ export class ListarAnuncioComponent implements OnInit {
   url = this.anuncioService.BASE_URL+'/images/'
 
   ngOnInit() {
+    let rol = this.sessionStorageService.get('rol')
+
+    if (rol != '1') {
+      this.sessionStorageService.clear()
+    }
     this.anuncios = this.anuncioService.obtenerAnuncios();
   }
 

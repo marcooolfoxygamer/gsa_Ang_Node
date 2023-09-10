@@ -14,7 +14,7 @@
             <li><a routerLink="../anuncios">Anuncios</a></li>
             <li><a routerLink="../recomendaciones">Recomendaciones</a></li>
             <li><a routerLink="../aprendiz">Mis actividades</a></li>
-            <li id="liFinLinea"><a href="../model/salir.php">Cerrar Sesion</a></li>
+            <li id="liFinLinea"><a (click)="this.sessionStorageService.clear()">Cerrar Sesion</a></li>
         </ul>
     </div>
 

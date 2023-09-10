@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Route, Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { AnuncioService } from 'src/app/shared/service-anuncio/anuncio.service';
 import { AnuncioModel } from 'src/app/shared/service-anuncio/anuncio.model';
+import { SessionStorageService } from 'src/app/shared/service-session_storage/session-storage.service';
 
 @Component({
   selector: 'app-agregar-anuncio',
@@ -16,18 +17,23 @@ export class AgregarAnuncioComponent implements OnInit{
   
   constructor(
     private anuncioService: AnuncioService,
+    protected sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    let rol = this.sessionStorageService.get('rol')
+
+    if (rol != '1') {
+      this.sessionStorageService.clear()
+    }
   }
 
   selectImage(event: any) {
     const file = event.target.files[0];
 
     this.imagen = file;
-    // console.log(this.imagen)
   }
 
   onSubmit() {
@@ -46,6 +52,10 @@ export class AgregarAnuncioComponent implements OnInit{
           if (data2 != `No hay registros`) {
             alert('Ya tenemos una imagen registrada con el mismo nombre. Por favor, cambie el nombre del archivo')
           } else {
+            let id_u:any = this.sessionStorageService.get('id_user')
+            // console.log(id_u)
+            this.anuncio.fk_id_admin_anunc = id_u
+            // console.log(this.anuncio.fk_id_admin_anunc)
             this.anuncioService.agregarAnuncio(this.anuncio).subscribe(data3 => {
               alert(data3)
               this.router.navigate(['../anuncios_listado'])

@@ -223,21 +223,22 @@ app.post('/iniciar_sesion', (req, res) => {
 
 // Obtener rol del usuario que inició sesión
 
-app.post('/get_rol', (req, res) => {
+app.post('/get_rol_id', (req, res) => {
     let {
         correo_sena_user,contrasena
     } = req.body
 
     contrasena = md5(contrasena)
 
-    const query = `SELECT fk_tipo_user FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND contrasena='${contrasena}' AND estado_user=1`
+    const query = `SELECT fk_tipo_user, id_user FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND contrasena='${contrasena}' AND estado_user=1`
         conexion.query(query, (error, resultado) => {
             if(error) {
                 return res.json('Error')
             }
             else {
                 if (resultado.length == 1) {
-                    return res.json(resultado[0]['fk_tipo_user'])
+                    return res.json(resultado)
+                    // return res.json(resultado[0]['fk_tipo_user'])
                 }
                 else {
                     return res.json('No se encontró el rol del usuario')
@@ -332,7 +333,7 @@ app.post('/anuncios_agregar', (req,res) => {
         fk_id_admin_anunc,titulo_anunc,desc_anunc,img_anunc
     } = req.body
 
-    const query = `INSERT INTO anuncios VALUES (NULL,1,'${titulo_anunc}','${desc_anunc}','${img_anunc}',1)`
+    const query = `INSERT INTO anuncios VALUES (NULL,${fk_id_admin_anunc},'${titulo_anunc}','${desc_anunc}','${img_anunc}',1)`
         conexion.query(query, (error) => {
             if(error) {
                 res.json('Un error ocurrió. Por favor, inténtelo nuevamentente')
@@ -446,7 +447,7 @@ app.post('/planificador', (req,res) => {
         id_aprend,musculo
     } = req.body
 
-    const query = `INSERT INTO planificador VALUES (NULL,1,'${musculo}')`
+    const query = `INSERT INTO planificador VALUES (NULL,${id_aprend},'${musculo}')`
         conexion.query(query, (error) => {
             if(error) {
                 res.json('Un error ocurrió. Por favor, inténtelo nuevamentente')
@@ -506,6 +507,24 @@ app.get('/asistencia_listado/:id_registro_asis', (req, res) => {
             res.json(resultado)
         } else {
             res.json(`No hay registros`)
+        }
+    })
+})
+
+
+app.post('/asistencia_listado_aprend', (req, res) => {
+    let {
+        fk_id_aprend_asis
+    } = req.body
+
+    const query = `SELECT * FROM usuarios WHERE id_user=${fk_id_aprend_asis} AND fk_tipo_user=2 AND estado_user=1`
+    conexion.query(query, (error, resultado) => {
+        if(error) return console.error(error.message)
+
+        if(resultado.length > 0) {
+            res.json('Si existe')
+        } else {
+            res.json(`No existe`)
         }
     })
 })

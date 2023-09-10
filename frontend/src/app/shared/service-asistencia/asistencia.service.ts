@@ -20,6 +20,10 @@ export class AsistenciaService {
     return this.http.get<AsistenciaModel[]>(`${this.BASE_URL}/asistencia_listado/${id_registro_asis}`)
   }
 
+  validarAprendiz(asistencia: AsistenciaModel) {
+    return this.http.post<string>(`${this.BASE_URL}/asistencia_listado_aprend`, asistencia)
+  }
+
   agregarAsistencia(asistencia: AsistenciaModel) {
     return this.http.post<string>(`${this.BASE_URL}/asistencia_agregar`, asistencia);
   }

@@ -46,6 +46,10 @@
 #liFinLinea{
     margin-right: 130px;
 }
+
+#liFinLinea a{
+    cursor: pointer;
+}
 /* Cada opción Barra Navegación */
 .navbar ul li{
     list-style: none;

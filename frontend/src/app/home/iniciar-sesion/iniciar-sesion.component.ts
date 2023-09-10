@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { UsuarioService } from 'src/app/shared/service-usuario/usuario.service';
 import { Route, Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { UsuarioModel } from 'src/app/shared/service-usuario/usuario.model';
+import { SessionStorageService } from 'src/app/shared/service-session_storage/session-storage.service';
 
 @Component({
   selector: 'app-iniciar-sesion',
@@ -15,6 +16,7 @@ export class IniciarSesionComponent implements OnInit {
 
   constructor(
     private usuarioService: UsuarioService,
+    private sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -28,25 +30,44 @@ export class IniciarSesionComponent implements OnInit {
     this.usuarioService.iniciarSesion(this.usuario).subscribe(data => {
       if (data == 'El correo o la contraseña es incorrecta. Por favor, inténtelo de nuevo') {
         alert(data)
-        // this.router.navigate(['../iniciar_sesion'])
-        // this.router.navigate(['../inicio'])
       }
       else {
-        this.usuarioService.obtenerRol(this.usuario).subscribe(data => {
-          if (data == '1') {
+        this.usuarioService.obtenerRol_Id(this.usuario).subscribe(data => {
+          let dato:any = data[0]
+          let rol = dato['fk_tipo_user']
+          let id = dato['id_user']
+          if (rol == '1') {
+            // sessionStorage.setItem('rol',rol)
+            // sessionStorage.setItem('id_user', id)
+            this.sessionStorageService.set('rol',rol)
+            this.sessionStorageService.set('id_user',id)
             this.router.navigate(['../admin'])
           }
-          if (data == '2') {
+          else if (rol == '2') {
+            // sessionStorage.setItem('rol',rol)
+            // sessionStorage.setItem('id_user', id)
+            this.sessionStorageService.set('rol',rol)
+            this.sessionStorageService.set('id_user',id)
             this.router.navigate(['../aprendiz'])
           }
-          if (data == '3') {
+          else if (rol == '3') {
+            // sessionStorage.setItem('rol',rol)
+            // sessionStorage.setItem('id_user', id)
+            this.sessionStorageService.set('rol',rol)
+            this.sessionStorageService.set('id_user',id)
             this.router.navigate(['../instructor'])
+          } else {
+            this.sessionStorageService.clear()
           }
         })
       }
 
     })
 
+  }
+
+  getSession(session:any) {
+    return sessionStorage.getItem(session)
   }
 
 }

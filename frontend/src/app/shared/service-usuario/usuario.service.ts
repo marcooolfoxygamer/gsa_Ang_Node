@@ -47,8 +47,8 @@ export class UsuarioService {
     return this.http.post<string>(`${this.BASE_URL}/iniciar_sesion`, usuario)
   }
 
-  obtenerRol(usuario: UsuarioModel) {
-    return this.http.post<string>(`${this.BASE_URL}/get_rol`, usuario)
+  obtenerRol_Id(usuario: UsuarioModel) {
+    return this.http.post<string>(`${this.BASE_URL}/get_rol_id`, usuario)
   }
 
   actualizarUsuario(usuario: UsuarioModel) {
