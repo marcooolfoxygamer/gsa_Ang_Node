@@ -37,22 +37,16 @@ export class IniciarSesionComponent implements OnInit {
           let rol = dato['fk_tipo_user']
           let id = dato['id_user']
           if (rol == '1') {
-            // sessionStorage.setItem('rol',rol)
-            // sessionStorage.setItem('id_user', id)
             this.sessionStorageService.set('rol',rol)
             this.sessionStorageService.set('id_user',id)
             this.router.navigate(['../admin'])
           }
           else if (rol == '2') {
-            // sessionStorage.setItem('rol',rol)
-            // sessionStorage.setItem('id_user', id)
             this.sessionStorageService.set('rol',rol)
             this.sessionStorageService.set('id_user',id)
             this.router.navigate(['../aprendiz'])
           }
           else if (rol == '3') {
-            // sessionStorage.setItem('rol',rol)
-            // sessionStorage.setItem('id_user', id)
             this.sessionStorageService.set('rol',rol)
             this.sessionStorageService.set('id_user',id)
             this.router.navigate(['../instructor'])

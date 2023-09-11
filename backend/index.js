@@ -186,7 +186,6 @@ app.post('/registrarse', (req, res) => {
         conexion.query(query, (error) => {
             if(error) {
                 res.json('Ha ocurrido un error. Por favor, inténtelo nuevamente')
-                // res.json('El número de documento ingresado ya se encuentra registrado en nuestro sistema. Por favor, inténtelo nuevamentente')
             }
             else {
                 res.json(`Se agregó correctamente el usuario`)
@@ -238,7 +237,6 @@ app.post('/get_rol_id', (req, res) => {
             else {
                 if (resultado.length == 1) {
                     return res.json(resultado)
-                    // return res.json(resultado[0]['fk_tipo_user'])
                 }
                 else {
                     return res.json('No se encontró el rol del usuario')

@@ -52,8 +52,6 @@ export class EditarAnuncioComponent implements OnInit {
     let id_admin:any = this.sessionStorageService.get('id_user')
 
     if (typeof this.imagen === "string"){
-      // console.log(id_admin)
-      // console.log(this.anuncio.fk_id_admin_anunc)
       if (id_admin == this.anuncio.fk_id_admin_anunc) {
         this.anuncioService.actualizarAnuncio(this.anuncio).subscribe(data => {
           alert(data)
