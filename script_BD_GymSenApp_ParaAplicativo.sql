@@ -158,10 +158,10 @@ insert into anteced_salud values
 ("Enfermedad cronica"),
 ("Ninguna");
 
-insert into usuarios values
-(1,1,"Juanito", NULL, "Lopez", "Mesa", "a@soy.sena.edu.co", MD5("123"),'Asma', '', 1),
-(2,2,"Juanito", NULL, "Lopez", "Mesa", "b@soy.sena.edu.co", MD5("123"),'Asma', '', 1),
-(3,3,"Juanito", NULL, "Lopez", "Mesa", "c@soy.sena.edu.co", MD5("123"),'Asma', '', 1);
+-- insert into usuarios values
+-- (1,1,"Juanito", NULL, "Lopez", "Mesa", "a@soy.sena.edu.co", MD5("123"),'Asma', '', 1),
+-- (2,2,"Juanito", NULL, "Lopez", "Mesa", "b@soy.sena.edu.co", MD5("123"),'Asma', '', 1),
+-- (3,3,"Juanito", NULL, "Lopez", "Mesa", "c@soy.sena.edu.co", MD5("123"),'Asma', '', 1);
 
 insert into anuncios values
 (NULL, 1, "Ten en cuenta", "Por situaciones adversas, el gimnasio no estará disponible en las mañanas hasta nuevo aviso. Pedimos excusas por esta situación. Gracias.", "cinco.jpg",1),

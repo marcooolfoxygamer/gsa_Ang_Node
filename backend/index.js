@@ -9,7 +9,9 @@ const multer = require('multer');
 const morgan = require('morgan')
 const path = require('path')
 // npm install md5
-const md5 = require('md5');
+// const md5 = require('md5');
+// npm install crypto
+const crypto = require('crypto')
 
 const app = express()
 
@@ -25,6 +27,10 @@ app.use(cors({origin:"*"}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
+// encrypt
+const algorithm = "aes-256-cbc";
+const initVector = crypto.randomBytes(16);
+const SecurityKey = crypto.randomBytes(32);
 
 const PUERTO = 9300
 
@@ -151,9 +157,11 @@ app.put('/validar_rec_contrasena/:id_user', (req, res) => {
         contrasena
     } = req.body
 
-    contrasena = md5(contrasena)
+    // contrasena = md5(contrasena)
+    const cipher = crypto.createCipheriv(algorithm,SecurityKey, initVector)
+    let contrasen = cipher.update(contrasena, "utf-8", "hex") + cipher.final('hex');
 
-    const query = `UPDATE usuarios SET contrasena='${contrasena}' WHERE id_user=${id_user}`
+    const query = `UPDATE usuarios SET contrasena='${contrasen}' WHERE id_user=${id_user}`
     conexion.query(query, (error) => {
         if(error) return console.error(error.message)
 
@@ -180,9 +188,12 @@ app.post('/registrarse', (req, res) => {
         anteced_salud_inp='';
     }
 
-    contrasena = md5(contrasena)
+    // contrasena = md5(contrasena)
+    const cipher = crypto.createCipheriv(algorithm,SecurityKey, initVector)
+    let contrasen = cipher.update(contrasena, "utf-8", "hex") + cipher.final('hex');
 
-    const query = `INSERT INTO usuarios values(${id_user},2,'${nom1_user}','${nom2_user}','${ape1_user}','${ape2_user}','${correo_sena_user}','${contrasena}','${fk_anteced_salud_sel}','${anteced_salud_inp}',1)`
+
+    const query = `INSERT INTO usuarios values(${id_user},2,'${nom1_user}','${nom2_user}','${ape1_user}','${ape2_user}','${correo_sena_user}','${contrasen}','${fk_anteced_salud_sel}','${anteced_salud_inp}',1)`
         conexion.query(query, (error) => {
             if(error) {
                 res.json('Ha ocurrido un error. Por favor, inténtelo nuevamente')
@@ -202,9 +213,11 @@ app.post('/iniciar_sesion', (req, res) => {
         correo_sena_user,contrasena
     } = req.body
 
-    contrasena = md5(contrasena)
+    // contrasena = md5(contrasena)
+    const cipher = crypto.createCipheriv(algorithm,SecurityKey, initVector)
+    let contrasen = cipher.update(contrasena, "utf-8", "hex") + cipher.final('hex');
 
-    const query = `SELECT * FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND contrasena='${contrasena}' AND estado_user=1`
+    const query = `SELECT * FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND contrasena='${contrasen}' AND estado_user=1`
         conexion.query(query, (error, resultado) => {
             if(error) {
                 res.json('Ha ocurrido un error. Por favor, inténtelo nuevamente')
@@ -227,9 +240,11 @@ app.post('/get_rol_id', (req, res) => {
         correo_sena_user,contrasena
     } = req.body
 
-    contrasena = md5(contrasena)
+    // contrasena = md5(contrasena)
+    const cipher = crypto.createCipheriv(algorithm,SecurityKey, initVector)
+    let contrasen = cipher.update(contrasena, "utf-8", "hex") + cipher.final('hex');
 
-    const query = `SELECT fk_tipo_user, id_user FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND contrasena='${contrasena}' AND estado_user=1`
+    const query = `SELECT fk_tipo_user, id_user FROM usuarios WHERE correo_sena_user='${correo_sena_user}' AND contrasena='${contrasen}' AND estado_user=1`
         conexion.query(query, (error, resultado) => {
             if(error) {
                 return res.json('Error')
