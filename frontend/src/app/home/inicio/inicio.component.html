@@ -10,13 +10,18 @@
 	<div class="banner" id="Inicio">
         <div class="navbar" id="nav_ind">
             <img src="../../../assets/images/Logo_GsA-removebg-preview.png" class="logo">
-            <ul>
+            <ul id="_items">
 				<li><a routerLink="../home">Inicio</a></li>
 				<li><a routerLink="../anuncios">Anuncios</a></li>
 				<li><a routerLink="../recomendaciones">Recomendaciones</a></li>
 				<li><a routerLink="../registrarse">Registrarse</a></li>
 				<li id="liFinLinea"><a routerLink="../iniciar_sesion">Iniciar sesión</a></li>
 			</ul>
+            <div class="nav_toggle" id="_toggle" (click)='showMenu()'>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
         <div class="contenido">
 			<img id="img-bg-ind" src="../../../assets/images/Isologo_GsA-removebg-preview.png" alt="">
@@ -24,5 +29,12 @@
         </div>
     </div>
     <app-footer></app-footer>
+    <!-- <script>
+        _toggle.onclick = () => {
+            _items.classList.toggle("open")
+            _toggle.classList.toggle("close")
+            console.log("entro")
+        }
+    </script> -->
 </body>
 </html>

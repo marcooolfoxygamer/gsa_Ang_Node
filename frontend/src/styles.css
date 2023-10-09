@@ -19,7 +19,7 @@
     margin: 40px auto 0 auto;
     z-index: 6;
     /* width: 350px; */
-    width: calc(30% - 100px);
+    width: calc(35% - 100px);
 }
 
 /* Barra de Navegación */
@@ -40,7 +40,7 @@
 .logo{
     padding-left: 15%;
     width: 40px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 /* Último li de Barra Navegación */
 #liFinLinea{
@@ -78,6 +78,82 @@
 /* Luego de pasar puntero encima de opción de la Barra de Navegación (línea inferior) */
 .navbar ul li:hover::after{
     width: 100%;
+}
+.nav_toggle{
+    display: none;
+}
+
+/* estilos de la barra de navegación en dispositivos moviles */
+@media screen and (max-width: 902px) {
+    /* .logo{
+        width: 40%;
+    } */
+    /*
+    #img-bg-ind{
+        width: 50%;
+    } */
+    #img-bg-ind{
+        width: calc(50% - 130px);
+    }
+    .navbar ul{
+        /* position:fixed; */
+        position: absolute;
+        top: 78px;
+        left: 0;
+        /* margin-top: 152px; */
+        background: #eeeeee;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        /* height: max-content; */
+        height: 100%;
+        transform: translateX(-100%);
+        transition: 0.3s ease all;
+        z-index: 11;
+        padding: 20px 0;
+    }
+    .navbar ul li{
+        text-align: center;
+        /* margin: 30px auto; */
+        margin: auto;
+    }
+    #liFinLinea{
+        margin: auto;
+    }
+    .nav_toggle{
+        display: flex !important;
+        flex-direction: column;
+        margin-right: 6%;
+    }
+    .nav_toggle span{
+        width: 30px;
+        height: 4px;
+        background: white;
+        margin-bottom: 5px;
+        border-radius: 2px;
+        transform-origin: 5px 0px;
+        transition: all 0.2s linear;
+    }
+    .close span{
+        transform: rotate(45deg) translate(0px, 0px);
+    }
+    .close span:nth-child(2){
+        display: none;
+    }
+    .close span:nth-child(3){
+        transform: rotate(-45deg) translate(-6px, 1px);
+    }
+    .open{
+        transform: translateX(0) !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #img-bg-ind{
+        width: calc(90% - 180px);
+    }
 }
 
 /* Selección de texto en página de color verde y color de teto a blanco */
