@@ -106,7 +106,7 @@ app.post('/validar_correo', (req, res) => {
             else {
                 if (resultado.length == 0) {
                     
-                    const query_id = `SELECT * FROM usuarios WHERE id_user=${id_user} AND estado_user=1`
+                    const query_id = `SELECT * FROM usuarios WHERE id_user=${id_user}`
                     conexion.query(query_id, (error, resultado_id) => {
                         if(error){
                             return res.json('Error')
