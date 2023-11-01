@@ -25,11 +25,26 @@ export class RegistrarseComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('onSubmit');
 
-    if (this.usuario.ape1_user == "") {
-      alert("Por favor, digite su primer apellido")
-    } else {
+    if (this.usuario.nom1_user == '') {
+      alert("Por favor, digite su primer nombre");
+    }
+    else if (this.usuario.ape1_user == '') {
+      alert("Por favor, digite su primer apellido");
+    }
+    else if (this.usuario.correo_sena_user == '') {
+      alert("Por favor, digite su correo electrónico");
+    }
+    else if (this.usuario.id_user == '') {
+      alert("Por favor, digite su número de identificación");
+    }
+    else if (this.usuario.contrasena == '') {
+      alert("Por favor, digite la contraseña que le pondrá a su cuenta");
+    }
+    else if (this.usuario.fk_anteced_salud_sel == '') {
+      alert("Por favor, escoja una de las opciones del selector de antecedentes");
+    }
+    else {
       this.usuarioService.validarCorreo(this.usuario).subscribe(data => {
         if (data == 'Disponible') {
           this.usuarioService.agregarUsuario(this.usuario).subscribe(data => {

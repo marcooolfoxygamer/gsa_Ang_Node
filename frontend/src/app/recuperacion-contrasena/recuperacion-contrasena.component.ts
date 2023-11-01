@@ -25,14 +25,23 @@ export class RecuperacionContrasenaComponent implements OnInit {
   }
 
   onSubmit_first(){
-    this.usuarioService.validar_rec_contrasena(this.usuario).subscribe(data => {
-      if (data == 'Se encontró'){
-        this.subm = true
-      }
-      else {
-        alert(data)
-      }
-    })
+
+    if (this.usuario.correo_sena_user == '') {
+      alert("Por favor, digite el correo electrónico de la cuenta");
+    }
+    else if (this.usuario.id_user == '') {
+      alert("Por favor, digite su número de identificación");
+    }
+    else {
+      this.usuarioService.validar_rec_contrasena(this.usuario).subscribe(data => {
+        if (data == 'Se encontró'){
+          this.subm = true
+        }
+        else {
+          alert(data)
+        }
+      })
+    }
   }
 
   onSubmit_sec(){

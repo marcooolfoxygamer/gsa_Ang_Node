@@ -16,6 +16,7 @@ export class EditarAsistenciaComponent implements OnInit {
   asistencia = new AsistenciaModel("","","","","")
   id_inst_original = ""
   id_aprend_original = ""
+  fecha_asis_original = ""
 
   constructor(
     private asistenciaService: AsistenciaService,
@@ -42,6 +43,7 @@ export class EditarAsistenciaComponent implements OnInit {
 
       this.id_inst_original = data[0]['id_instruc_asis']
       this.id_aprend_original = data[0]['fk_id_aprend_asis']
+      this.fecha_asis_original = data[0]['fecha_asis']
 
     }, error => {
       console.log(error);
@@ -49,34 +51,47 @@ export class EditarAsistenciaComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('onSubmit');
 
-    let id_instructor:any = this.sessionStorageService.get('id_user')
+    if (this.asistencia.id_instruc_asis == null) {
+      alert("Por favor, digite su número de documento en el campo de la identificación del instructor");
+    }
+    else if (this.asistencia.fk_id_aprend_asis == null) {
+      alert("Por favor, digite el número de documento del aprendiz al que se le tomó la asistencia");
+    }
+    else {
 
-    if (id_instructor == this.id_inst_original) {
-
-      if (id_instructor == this.asistencia.id_instruc_asis) {
-
-        this.asistenciaService.validarAprendiz(this.asistencia).subscribe(data => {
-          if (data == 'Si existe') {
-            
-            if (this.id_aprend_original == this.asistencia.fk_id_aprend_asis) {
-              this.asistenciaService.actualizarAsistencia(this.asistencia).subscribe(data => {
-                alert(data)
-                this.router.navigate(['../asistencia_listado'])
-              })
-            } else {
-              alert('La identificación del aprendiz que editó en el registro de asistencia no corresponde al que estaba por defecto al crear el registro. Por favor, coloque la identificación del aprendiz que corresponde')
-            }
-          } else {
-            alert('La identificación de aprendiz que llenó en el registro no existe en el sistema. Por favor, inténtelo de nuevo')
-          }
-        })
-      } else {
-        alert('La identificación que llenó en el registro como suya es incorrecta. Por favor, inténtelo de nuevo')
+      if (this.asistencia.fecha_asis == '') {
+        this.asistencia.fecha_asis = this.fecha_asis_original;
       }
-    } else {
-      alert('El registro de asistencia que está editando no fue creado y/o diligenciado por usted. Por favor, contáctese con la persona que diligenció el registro')
+
+      let id_instructor:any = this.sessionStorageService.get('id_user')
+
+      if (id_instructor == this.id_inst_original) {
+
+        if (id_instructor == this.asistencia.id_instruc_asis) {
+
+          this.asistenciaService.validarAprendiz(this.asistencia).subscribe(data => {
+            if (data == 'Si existe') {
+
+              if (this.id_aprend_original == this.asistencia.fk_id_aprend_asis) {
+                this.asistenciaService.actualizarAsistencia(this.asistencia).subscribe(data => {
+                  alert(data)
+                  this.router.navigate(['../asistencia_listado'])
+                })
+              } else {
+                alert('La identificación del aprendiz que editó en el registro de asistencia no corresponde al que estaba por defecto al crear el registro. Por favor, coloque la identificación del aprendiz que corresponde')
+              }
+            } else {
+              alert('La identificación de aprendiz que llenó en el registro no existe en el sistema. Por favor, inténtelo de nuevo')
+            }
+          })
+        } else {
+          alert('La identificación que llenó en el registro como suya es incorrecta. Por favor, inténtelo de nuevo')
+        }
+      } else {
+        alert('El registro de asistencia que está editando no fue creado y/o diligenciado por usted. Por favor, contáctese con la persona que diligenció el registro')
+      }
+
     }
   }
 }

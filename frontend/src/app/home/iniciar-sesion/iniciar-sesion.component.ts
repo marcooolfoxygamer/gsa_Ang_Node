@@ -25,38 +25,48 @@ export class IniciarSesionComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('onSubmit');
 
-    this.usuarioService.iniciarSesion(this.usuario).subscribe(data => {
-      if (data == 'El correo o la contraseña es incorrecta. Por favor, inténtelo de nuevo') {
-        alert(data)
-      }
-      else {
-        this.usuarioService.obtenerRol_Id(this.usuario).subscribe(data => {
-          let dato:any = data[0]
-          let rol = dato['fk_tipo_user']
-          let id = dato['id_user']
-          if (rol == '1') {
-            this.sessionStorageService.set('rol',rol)
-            this.sessionStorageService.set('id_user',id)
-            this.router.navigate(['../admin'])
-          }
-          else if (rol == '2') {
-            this.sessionStorageService.set('rol',rol)
-            this.sessionStorageService.set('id_user',id)
-            this.router.navigate(['../aprendiz'])
-          }
-          else if (rol == '3') {
-            this.sessionStorageService.set('rol',rol)
-            this.sessionStorageService.set('id_user',id)
-            this.router.navigate(['../instructor'])
-          } else {
-            this.sessionStorageService.clear()
-          }
-        })
-      }
+    if (this.usuario.correo_sena_user == '') {
+      alert("Por favor, digite su correo electrónico");
+    }
+    else if (this.usuario.contrasena == '') {
+      alert("Por favor, digite la contraseña de la cuenta");
+    }
+    else {
+      
+      this.usuarioService.iniciarSesion(this.usuario).subscribe(data => {
+        if (data == 'El correo o la contraseña es incorrecta. Por favor, inténtelo de nuevo') {
+          alert(data)
+        }
+        else {
+          this.usuarioService.obtenerRol_Id(this.usuario).subscribe(data => {
+            let dato:any = data[0]
+            let rol = dato['fk_tipo_user']
+            let id = dato['id_user']
+            if (rol == '1') {
+              this.sessionStorageService.set('rol',rol)
+              this.sessionStorageService.set('id_user',id)
+              this.router.navigate(['../admin'])
+            }
+            else if (rol == '2') {
+              this.sessionStorageService.set('rol',rol)
+              this.sessionStorageService.set('id_user',id)
+              this.router.navigate(['../aprendiz'])
+            }
+            else if (rol == '3') {
+              this.sessionStorageService.set('rol',rol)
+              this.sessionStorageService.set('id_user',id)
+              this.router.navigate(['../instructor'])
+            } else {
+              this.sessionStorageService.clear()
+            }
+          })
+        }
 
-    })
+      })
+    }
+
+    
 
   }
 

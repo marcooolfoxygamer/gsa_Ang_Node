@@ -37,14 +37,19 @@ export class AgregarAnuncioComponent implements OnInit{
   }
 
   onSubmit() {
-    console.log('onSubmit');
 
     let formData = new FormData();
     formData.append('file',this.imagen);
 
     this.anuncioService.agregarImagen(formData).subscribe(data => {
       if (data == 'No hay archivos'){
-        alert('Por favor, inserte un archivo para poner de imagen')
+        alert('Por favor, inserte un archivo para poner de imagen en el anuncio')
+      }
+      else if (this.anuncio.titulo_anunc == '') {
+        alert("Por favor, escriba el título que tendrá el anuncio");
+      }
+      else if (this.anuncio.desc_anunc == '') {
+        alert("Por favor, digite la descripción que tendrá el anuncio");
       }
       else {
         this.anuncio.img_anunc = data
@@ -53,9 +58,8 @@ export class AgregarAnuncioComponent implements OnInit{
             alert('Ya tenemos una imagen registrada con el mismo nombre. Por favor, cambie el nombre del archivo')
           } else {
             let id_u:any = this.sessionStorageService.get('id_user')
-            // console.log(id_u)
             this.anuncio.fk_id_admin_anunc = id_u
-            // console.log(this.anuncio.fk_id_admin_anunc)
+
             this.anuncioService.agregarAnuncio(this.anuncio).subscribe(data3 => {
               alert(data3)
               this.router.navigate(['../anuncios_listado'])

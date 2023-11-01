@@ -44,11 +44,30 @@ export class EdicionComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('onSubmit');
-
-    this.usuarioService.actualizarUsuario(this.usuario).subscribe(data => {
-      alert(data)
-      this.router.navigate(['../usuarios_listado'])
-    })
+    
+    if (this.usuario.fk_tipo_user == '') {
+      alert("Por favor, seleccione el rol del usuario dentro del sistema");
+    }
+    else if (this.usuario.nom1_user == '') {
+      alert("Por favor, digite el primer nombre del usuario");
+    }
+    else if (this.usuario.ape1_user == '') {
+      alert("Por favor, digite el primer apellido del usuario");
+    }
+    else if (this.usuario.correo_sena_user == '') {
+      alert("Por favor, digite el correo electrónico del usuario");
+    }
+    else if (this.usuario.fk_anteced_salud_sel == '') {
+      alert("Por favor, escoja la opción del selector de antecedentes que corresponda con la situación del usuario");
+    }
+    else if (this.usuario.estado_user == '') {
+      alert("Por favor, defina el estado del usuario dentro del sistema con el selector creado para aclarar este apartado");
+    }
+    else {
+      this.usuarioService.actualizarUsuario(this.usuario).subscribe(data => {
+        alert(data)
+        this.router.navigate(['../usuarios_listado'])
+      })
+    }
   }
 }

@@ -29,7 +29,7 @@
 							<input type="password" class="form-control ini" placeholder="Contraseña" id="password_iniciosesion" name="pass" maxlength="15" [(ngModel)]="usuario.contrasena" required>
 						</div>
 						<div class="form-group-ini" style="margin-top: 3%;">
-							<input type="submit" value="Iniciar sesión" class="Subm inises" id="submit-ini1" name="loggear" [disabled]="!usuarioForm.form.valid">
+							<input type="submit" value="Iniciar sesión" class="Subm inises" id="submit-ini1" name="loggear">
 							<button value="Recuperar_contraseña" class="Subm inises ini2" id="submit-ini2" [routerLink]="['../recuperacion_contrasena']">Olvidó su contraseña?</button>
 						</div>
 					</form>
